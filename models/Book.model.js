@@ -5,20 +5,17 @@ const bookSchema = new Schema({
     type: String,
     required: true,
   },
-  Img: {
+  img: {
     type: String,
     required: true,
   },
   url: {
     type: String,
   },
-  Description: {
+  description: {
     type: String,
   },
-  Quantity: {
-    type: Number,
-  },
-  Price: {
+  price: {
     type: Number,
     required: true,
   },
@@ -26,7 +23,7 @@ const bookSchema = new Schema({
     type: String,
     enum: ["libro", "audiolibro"],
   },
-  user: {
+  adminId: {
     type: Schema.Types.ObjectId,
     ref: "user",
   },

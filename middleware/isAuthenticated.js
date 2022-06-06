@@ -9,7 +9,7 @@ const isAuthenticated = expressjwt({
       console.log("sin token");
       return null;
     }
-    console.log(req.headers.authorization);
+    console.log("test", req.headers.authorization);
     const tokenArr = req.headers.authorization.split(" ");
     const tokenType = tokenArr[0];
     const token = tokenArr[1];
@@ -24,4 +24,4 @@ const isAuthenticated = expressjwt({
   },
 });
 
-module.export = isAuthenticated;
+module.exports = isAuthenticated;
