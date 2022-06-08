@@ -9,10 +9,6 @@ const informationSchema = new Schema({
     type: String,
     required: true,
   },
-  telf: {
-    type: String,
-    required: true,
-  },
   message: {
     type: String,
   },

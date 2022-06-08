@@ -10,4 +10,7 @@ router.use("/auth", authRoutes);
 const bookRoutes = require("./book.routes.js");
 router.use("/book", bookRoutes);
 
+const information = require("./information.routes.js");
+router.use("/messages", information);
+
 module.exports = router;

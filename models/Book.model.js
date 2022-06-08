@@ -12,6 +12,9 @@ const bookSchema = new Schema({
   url: {
     type: String,
   },
+  purchaseLink: {
+    type: String,
+  },
   description: {
     type: String,
   },

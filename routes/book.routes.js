@@ -1,18 +1,39 @@
 const router = require("express").Router();
 const isAuthenticated = require("../middleware/isAuthenticated.js");
 const BookModel = require("../models/Book.model.js");
-const InformationModel = require("../models/Information.model.js");
 
 // GET "/" => para ver todos los libros
-router.get("/", async (req, res, next) => {
+router.get("/", isAuthenticated, async (req, res, next) => {
   try {
     const response = await BookModel.find();
+
     res.json(response);
   } catch (error) {
     next(error);
   }
 });
 
+// GET "/" => para ver todos los libros
+router.get("/libro", isAuthenticated, async (req, res, next) => {
+  try {
+    const response = await BookModel.find({ type: "libro" });
+
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET "/audio" => para ver todos los audio libros
+router.get("/audio", isAuthenticated, async (req, res, next) => {
+  try {
+    const response = await BookModel.find({ type: "audiolibro" });
+
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
 // Post "/create" => para crear libros
 router.post("/create", isAuthenticated, async (req, res, next) => {
   const { title, img, url, description, price, type, adminId } = req.body;
@@ -52,12 +73,22 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// DELETE "/:id" => para eliminar un libro por id
-router.delete("/:id", async (req, res, next) => {
+// GET "/:id" => tener un libro
+router.get("/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    // buscar un todo y borrarlo de la BD
+    const response = await BookModel.findById(id);
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+// DELETE "/:id" => para eliminar un libro por id
+router.delete("/:id", isAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
     await BookModel.findByIdAndDelete(id);
     res.json("el libro ha sido borrado");
   } catch (error) {
@@ -66,7 +97,7 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 // PATCH "/:id" => editar un Libro
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
   const { title, img, url, description, price, type, adminId } = req.body;
 
@@ -101,16 +132,6 @@ router.patch("/:id", async (req, res, next) => {
       },
       { new: true }
     );
-    res.json(response);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// GET "/audio" => para ver todos los audio libros
-router.get("/audio", isAuthenticated, async (req, res, next) => {
-  try {
-    const response = await BookModel.find();
     res.json(response);
   } catch (error) {
     next(error);
