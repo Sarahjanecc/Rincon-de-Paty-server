@@ -36,12 +36,14 @@ router.get("/audio", isAuthenticated, async (req, res, next) => {
 });
 // Post "/create" => para crear libros
 router.post("/create", isAuthenticated, async (req, res, next) => {
-  const { title, img, url, description, price, type, adminId } = req.body;
+  const { title, img, url, description, price, purchaseLink, type, adminId } =
+    req.body;
 
   if (
     !title ||
     !description ||
     price === undefined ||
+    !purchaseLink ||
     !type ||
     !adminId ||
     !img
@@ -64,6 +66,7 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
       url,
       description,
       price,
+      purchaseLink,
       type,
       adminId,
     });
@@ -105,6 +108,7 @@ router.patch("/:id", isAuthenticated, async (req, res, next) => {
     !title ||
     !description ||
     price === undefined ||
+    !purchaseLink ||
     !type ||
     !adminId ||
     !img
@@ -127,6 +131,7 @@ router.patch("/:id", isAuthenticated, async (req, res, next) => {
         url,
         description,
         price,
+        purchaseLink,
         type,
         adminId,
       },
