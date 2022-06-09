@@ -17,6 +17,8 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 router.post("/", isAuthenticated, async (req, res, next) => {
   const { name, message, userId, email } = req.body;
 
+  // userId del creador nunca debe venir del Frontend, esto viene del backend. Usuario logeado. Clase Auth.
+
   if (!name || !message || !userId || !email) {
     res.status(400).json("todos los campos deben estar llenos");
     return;

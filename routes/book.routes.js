@@ -39,6 +39,8 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
   const { title, img, url, description, price, purchaseLink, type, adminId } =
     req.body;
 
+  const { _id } = req.payload;
+  // ! el admidId nunca debe venir del Frontend. Buscamos como agregarlo desde el backed. Clase de Auth
   if (
     !title ||
     !description ||
@@ -68,7 +70,7 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
       price,
       purchaseLink,
       type,
-      adminId,
+      adminId: _id,
     });
     res.json(response);
   } catch (error) {
@@ -87,31 +89,22 @@ router.get("/:id", isAuthenticated, async (req, res, next) => {
     next(error);
   }
 });
-// DELETE "/:id" => para eliminar un libro por id
-router.delete("/:id", isAuthenticated, async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    await BookModel.findByIdAndDelete(id);
-    res.json("el libro ha sido borrado");
-  } catch (error) {
-    next(error);
-  }
-});
 
 // PATCH "/:id" => editar un Libro
 router.patch("/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
-  const { title, img, url, description, price, type, adminId } = req.body;
+  const { title, img, url, description, price, purchaseLink, type, adminId } =
+    req.body;
 
+  console.log(req.body);
   if (
     !title ||
+    !img ||
     !description ||
     price === undefined ||
     !purchaseLink ||
     !type ||
-    !adminId ||
-    !img
+    !adminId
   ) {
     res.status(400).json("todos los campos deben estar llenos");
     return;
@@ -138,6 +131,18 @@ router.patch("/:id", isAuthenticated, async (req, res, next) => {
       { new: true }
     );
     res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE "/:id" => para eliminar un libro por id
+router.delete("/:id", isAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    await BookModel.findByIdAndDelete(id);
+    res.json("el libro ha sido borrado");
   } catch (error) {
     next(error);
   }
