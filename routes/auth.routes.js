@@ -64,7 +64,7 @@ router.post("/login", async (req, res, next) => {
       _id: foundUser._id,
       email: foundUser.email,
       name: foundUser.name,
-      adminId: foundUser.admin,
+      admin: foundUser.admin,
     };
 
     const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {

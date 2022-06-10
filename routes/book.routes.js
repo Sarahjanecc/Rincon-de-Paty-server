@@ -36,8 +36,7 @@ router.get("/audio", isAuthenticated, async (req, res, next) => {
 });
 // Post "/create" => para crear libros
 router.post("/create", isAuthenticated, async (req, res, next) => {
-  const { title, img, url, description, price, purchaseLink, type, adminId } =
-    req.body;
+  const { title, img, url, description, price, purchaseLink, type } = req.body;
 
   const { _id } = req.payload;
   // ! el admidId nunca debe venir del Frontend. Buscamos como agregarlo desde el backed. Clase de Auth
@@ -47,7 +46,6 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
     price === undefined ||
     !purchaseLink ||
     !type ||
-    !adminId ||
     !img
   ) {
     res.status(400).json("todos los campos deben estar llenos");
@@ -93,8 +91,8 @@ router.get("/:id", isAuthenticated, async (req, res, next) => {
 // PATCH "/:id" => editar un Libro
 router.patch("/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
-  const { title, img, url, description, price, purchaseLink, type, adminId } =
-    req.body;
+  const { title, img, url, description, price, purchaseLink, type } = req.body;
+  const { _id } = req.payload;
 
   console.log(req.body);
   if (
@@ -103,8 +101,7 @@ router.patch("/:id", isAuthenticated, async (req, res, next) => {
     !description ||
     price === undefined ||
     !purchaseLink ||
-    !type ||
-    !adminId
+    !type
   ) {
     res.status(400).json("todos los campos deben estar llenos");
     return;
@@ -126,7 +123,7 @@ router.patch("/:id", isAuthenticated, async (req, res, next) => {
         price,
         purchaseLink,
         type,
-        adminId,
+        adminId: _id,
       },
       { new: true }
     );
